@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 20:33:00 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/14 18:21:37 by jibot            ###   ########.fr       */
+/*   Updated: 2022/02/14 23:06:51 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,15 @@ t_int	*new_int(int nb)
 	return (new);
 }
 
-int	is_sorted(t_int *stack)
+int	is_svalued(t_int *stack)
 {
 	int	unsorted;
 	t_int *cpy;
 
 	unsorted = 0;	
 	cpy = stack;
+	if (!cpy->next && cpy->sort_value != -1)
+		return (1);
 	while (cpy->next)
 	{
 		if (cpy->sort_value == -1)
@@ -60,8 +62,17 @@ int	get_min(t_int *stack)
 	cpy = stack;
 	unsorted = 0;
 	
-	if (is_sorted(stack) == 1)
-		return (0);
+	if (is_svalued(stack) == 1)
+	{
+		if (stacklen(stack) == 1)
+			return (cpy->sort_value);
+		while (cpy->next)
+		{
+			if (cpy->sort_value < min)
+				min = cpy->sort_value;
+			cpy = cpy->next;
+		}
+	}
 	while (cpy->next)
 	{
 		if (cpy->nb < min && cpy->sort_value == -1)
@@ -169,4 +180,59 @@ void	r_rotate(t_int **slist)
 		temp = temp->next;
 	*slist = temp->next;
 	temp->next = NULL;
+}
+
+int	is_sorted(t_int *stack)
+{
+	t_int	*cpy;
+
+	cpy = stack;
+	while (cpy->next)
+	{
+		if (cpy->delta != 1)
+			return (0);
+		cpy = cpy->next;
+	}
+	return (1);
+}
+
+void	set_delta(t_int *stack)
+{
+	t_int	*cpy;
+
+	cpy = stack;
+	while (cpy->next)
+	{
+		cpy->delta = cpy->next->sort_value - cpy->sort_value;
+		cpy = cpy->next;
+	}
+}
+
+void	set_pos(t_int *stack)
+{
+	t_int	*cpy;
+	int		i;
+
+	i = 0;
+	cpy = stack;
+	if (stacklen(stack) == 1)
+		stack->pos = 0;
+	while (cpy->next)
+	{
+		cpy->pos = i;
+		i++;
+	}
+	cpy->pos = i;
+}
+
+void	push_swap(t_int *stack_a, t_int *stack_b)
+{
+	push(&stack_a, &stack_b);
+	while (!is_sorted(stack_a))
+	{
+		set_pos(stack_a);
+		set_pos(stack_b);
+		set_delta(stack_a);
+		set_delta(stack_b);
+	}
 }
