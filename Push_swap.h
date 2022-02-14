@@ -6,13 +6,14 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 13:41:48 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/12 16:21:06 by jibot            ###   ########.fr       */
+/*   Updated: 2022/02/14 18:01:41 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 # include "./libft/libft.h"
+# include <limits.h>
 
 typedef struct s_int
 {
@@ -23,6 +24,10 @@ typedef struct s_int
 	char			indice;
 }	t_int;
 
+int		is_sorted(t_int *stack);
+int		get_min(t_int *stack);
+int		get_max(t_int *stack);
+int		stacklen(t_int *stack);
 t_int	*ft_stacklast(t_int *stack);
 t_int	*new_int(int nb);
 void	stackadd(t_int **slist, t_int *new);
@@ -30,5 +35,6 @@ void	push(t_int **slist1, t_int **slist2);
 void	swap(t_int **slist);
 void	rotate(t_int **slist);
 void	r_rotate(t_int **slist);
+
 
 #endif

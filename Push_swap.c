@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 20:33:00 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/12 21:58:32 by jibot            ###   ########.fr       */
+/*   Updated: 2022/02/14 18:21:37 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,82 @@ t_int	*new_int(int nb)
 	new = malloc(sizeof(t_int));
 	new->nb = nb;
 	new->next = NULL;
+	new->sort_value = -1;
 	return (new);
+}
+
+int	is_sorted(t_int *stack)
+{
+	int	unsorted;
+	t_int *cpy;
+
+	unsorted = 0;	
+	cpy = stack;
+	while (cpy->next)
+	{
+		if (cpy->sort_value == -1)
+			unsorted += 1;
+		cpy = cpy->next;
+	}
+	if (cpy->sort_value != -1 && unsorted == 0)
+		return (1);
+	return (0);
+}
+
+int	get_min(t_int *stack)
+{
+	int		min;
+	int		unsorted;
+	t_int	*cpy;
+
+	min = INT_MAX;
+	cpy = stack;
+	unsorted = 0;
+	
+	if (is_sorted(stack) == 1)
+		return (0);
+	while (cpy->next)
+	{
+		if (cpy->nb < min && cpy->sort_value == -1)
+			min = cpy->nb;
+		cpy = cpy->next;
+	}
+	if (cpy->nb < min && cpy->sort_value == -1)
+		min = cpy->nb;
+	return (min);
+}
+
+int	get_max(t_int *stack)
+{
+	int		max;
+	t_int	*cpy;
+
+	max = 0;
+	cpy = stack;
+	while (cpy->next)
+	{
+		if (cpy->sort_value > max)
+			max = cpy->sort_value;
+		cpy = cpy->next;
+	}
+	if (cpy->sort_value > max)
+		max = cpy->sort_value;
+	return (max);
+}
+
+int	stacklen(t_int *stack)
+{
+	int		len;
+	t_int	*cpy;
+
+	len = 0;
+	cpy = stack;
+	while (cpy->next)
+	{
+		len++;
+		cpy = cpy->next;
+	}
+	return (len + 1);
 }
 
 void	stackadd(t_int **slist, t_int *new)
