@@ -12,6 +12,27 @@
 
 #include "Push_swap.h"
 
+int	Vabs(int a)
+{
+	if (a < 0)
+		return (-a);
+	return (a);
+}
+
+int	ft_max(int a, int b)
+{
+	if (a > b)
+		return (a);
+	return (b);
+}
+
+int	ft_min(int a, int b)
+{
+	if (a < b)
+		return (a);
+	return (b);
+}
+
 t_int	*ft_stacklast(t_int *stack)
 {
 	if (!stack)
@@ -189,7 +210,7 @@ int	is_sorted(t_int *stack)
 	cpy = stack;
 	while (cpy->next)
 	{
-		if (cpy->delta != 1)
+		if (cpy->pos != cpy->sort_value)
 			return (0);
 		cpy = cpy->next;
 	}
@@ -225,14 +246,49 @@ void	set_pos(t_int *stack)
 	cpy->pos = i;
 }
 
-void	push_swap(t_int *stack_a, t_int *stack_b)
+void	get_moves(t_int *value, t_int *stack_a, t_int *stack_b)
 {
+	int	moves;
+	int	half_a;
+	int	half_b;
+	t_int	*temp;
+
+	moves = 0;
+	half_a = which_half(value, stack_a);
+	temp = stack_b;
+	while (!(value->sort_value > temp->sort_value && value->sort_value < temp->next->sort_value))
+		temp = temp->next;
+	value->neighbor = temp->next;
+	half_b = which_half(value->neighbor, stack_b);
+	if (half_a == half_b)
+		value->moves = ft_max(Vabs(half_a * stacklen(stack_a) - value->pos), Vabs(half_b * stacklen(stack_b) - value->neighbor->pos));
+	else
+		value->moves = ft_min(Vabs(half_a * stacklen(stack_a) - value->pos) + Vabs(half_b * stacklen(stack_b) - value->neighbor->pos), ft_min(Vabs(half_b * stacklen(stack_a) - value->pos), Vabs(half_a * stacklen(stack_b) - value->neighbor->pos)));
+}
+
+int	moves_calc(t_int *stack_a, t_int *stack_b)
+{
+	t_int	*temp;
+	int	min_moves;
+	int	i;
+
 	push(&stack_a, &stack_b);
+	min_moves = INT_MAX;
 	while (!is_sorted(stack_a))
 	{
+		i = 0;
 		set_pos(stack_a);
 		set_pos(stack_b);
-		set_delta(stack_a);
-		set_delta(stack_b);
+		temp = stack_a;
+		while (i < stacklen(stack_a))
+		{
+			get_moves(temp, stack_a, stack_b);
+			if (temp->moves < min_moves)
+				min_moves = temp->moves;
+			if (temp->next)
+				temp = temp->next;
+			i++;
+		}
 	}
+	return (min_moves);
 }

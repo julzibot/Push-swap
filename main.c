@@ -56,10 +56,10 @@ int main(int argc, char **argv)
 	get_values(stack1, argv);
 	start = stack1;
 
-	/*while (start->next)
+	while (start->next)
 	{
 		printf("%i || %i\n", start->nb, start->sort_value);
 		start = start->next;
 	}
-	printf("%i || %i\n", start->nb, start->sort_value);*/
+	printf("%i || %i\n", start->nb, start->sort_value);
 }
