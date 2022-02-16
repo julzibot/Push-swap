@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 20:33:00 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/16 20:08:13 by jibot            ###   ########.fr       */
+/*   Updated: 2022/02/16 21:46:23 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,16 +222,16 @@ void	set_pos(t_int *stack)
 	t_int	*cpy;
 	int		i;
 
-	i = 0;
+	i = -1;
 	cpy = stack;
 	if (stacklen(stack) == 1)
 		stack->pos = 0;
-	while (cpy->next)
+	while (++i < stacklen(stack))
 	{
 		cpy->pos = i;
-		i++;
+		if (cpy->next)
+			cpy = cpy->next;
 	}
-	cpy->pos = i;
 }
 
 int	which_half(t_int *value, t_int *stack)
@@ -299,7 +299,7 @@ void	push_swap(t_int *stack_a, t_int *stack_b)
 	half_a = which_half(value, stack_a);
 	half_b = which_half(value->neighbor, stack_b);
 	
-	if (half_a != half_b && Vabs(half_a * stacklen(stack_a) - value->pos) + Vabs(half_b * stacklen(stack_b) - value->neighbor->pos) < ft_min(Vabs(half_b * stacklen(stack_a) - value->pos), Vabs(half_a * stacklen(stack_b) - value->neighbor->pos)))
+	/*if (half_a != half_b && Vabs(half_a * stacklen(stack_a) - value->pos) + Vabs(half_b * stacklen(stack_b) - value->neighbor->pos) < ft_min(Vabs(half_b * stacklen(stack_a) - value->pos), Vabs(half_a * stacklen(stack_b) - value->neighbor->pos)))
 		{
 			if (half_a == 0)
 			{
@@ -372,6 +372,6 @@ void	push_swap(t_int *stack_a, t_int *stack_b)
 					printf("rra");
 				}
 		}
-	}
+	}*/
 	//push(&stack_a, &stack_b);
 }
