@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 20:33:00 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/14 23:06:51 by jibot            ###   ########.fr       */
+/*   Updated: 2022/02/16 20:08:13 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	get_min(t_int *stack)
 	min = INT_MAX;
 	cpy = stack;
 	unsorted = 0;
-	
+
 	if (is_svalued(stack) == 1)
 	{
 		if (stacklen(stack) == 1)
@@ -217,18 +217,6 @@ int	is_sorted(t_int *stack)
 	return (1);
 }
 
-void	set_delta(t_int *stack)
-{
-	t_int	*cpy;
-
-	cpy = stack;
-	while (cpy->next)
-	{
-		cpy->delta = cpy->next->sort_value - cpy->sort_value;
-		cpy = cpy->next;
-	}
-}
-
 void	set_pos(t_int *stack)
 {
 	t_int	*cpy;
@@ -245,6 +233,16 @@ void	set_pos(t_int *stack)
 	}
 	cpy->pos = i;
 }
+
+int	which_half(t_int *value, t_int *stack)
+{
+	t_int	*temp;
+
+	temp = value;
+	if (temp->pos + 1 <= stacklen(stack) / 2)
+		return (0);
+	return (1);
+}	
 
 void	get_moves(t_int *value, t_int *stack_a, t_int *stack_b)
 {
@@ -266,29 +264,114 @@ void	get_moves(t_int *value, t_int *stack_a, t_int *stack_b)
 		value->moves = ft_min(Vabs(half_a * stacklen(stack_a) - value->pos) + Vabs(half_b * stacklen(stack_b) - value->neighbor->pos), ft_min(Vabs(half_b * stacklen(stack_a) - value->pos), Vabs(half_a * stacklen(stack_b) - value->neighbor->pos)));
 }
 
-int	moves_calc(t_int *stack_a, t_int *stack_b)
+t_int	*moves_calc(t_int *stack_a, t_int *stack_b)
 {
 	t_int	*temp;
-	int	min_moves;
+	t_int	*ret;
 	int	i;
 
-	push(&stack_a, &stack_b);
-	min_moves = INT_MAX;
-	while (!is_sorted(stack_a))
+	i = 0;
+	temp = stack_a;
+	ret = temp;
+	ret->moves = INT_MAX;
+	while (i < stacklen(stack_a))
 	{
-		i = 0;
-		set_pos(stack_a);
-		set_pos(stack_b);
-		temp = stack_a;
-		while (i < stacklen(stack_a))
+		get_moves(temp, stack_a, stack_b);
+		if (temp->moves < ret->moves)
+			ret = temp;
+		if (temp->next)
+			temp = temp->next;
+		i++;
+	}
+	return (ret);
+}
+
+void	push_swap(t_int *stack_a, t_int *stack_b)
+{
+	t_int	*value;
+	int		half_a;
+	int		half_b;
+
+	printf("hello");
+	set_pos(stack_a);
+	set_pos(stack_b);
+	value = moves_calc(stack_a, stack_b);
+	half_a = which_half(value, stack_a);
+	half_b = which_half(value->neighbor, stack_b);
+	
+	if (half_a != half_b && Vabs(half_a * stacklen(stack_a) - value->pos) + Vabs(half_b * stacklen(stack_b) - value->neighbor->pos) < ft_min(Vabs(half_b * stacklen(stack_a) - value->pos), Vabs(half_a * stacklen(stack_b) - value->neighbor->pos)))
 		{
-			get_moves(temp, stack_a, stack_b);
-			if (temp->moves < min_moves)
-				min_moves = temp->moves;
-			if (temp->next)
-				temp = temp->next;
-			i++;
+			if (half_a == 0)
+			{
+				while (stack_a != value)
+				{
+					rotate(&stack_a);
+					printf("ra");
+				}
+				while (stack_b != value->neighbor)
+				{
+					r_rotate(&stack_b);
+					printf("rrb");
+				}
+			}
+			else
+			{
+				while (stack_a != value)
+				{
+					r_rotate(&stack_a);
+					printf("rra");
+				}
+				while (stack_b != value->neighbor)
+				{
+					rotate(&stack_b);
+					printf("rb");
+				}
+			}
+		}
+	else
+	{
+		if ((half_a == half_b && half_b == 0) || (Vabs(half_b * stacklen(stack_a) - value->pos) < Vabs(half_a * stacklen(stack_b) - value->neighbor->pos) && half_b == 0))
+		{
+			while (!(stack_a == value || stack_b == value->neighbor))
+			{
+				rotate(&stack_a);
+				rotate(&stack_b);
+				printf("rr");
+			}
+			if (value == stack_a)
+				while (!(stack_b == value->neighbor))
+				{
+					rotate(&stack_b);
+					printf("rb");
+				}
+			else
+				while (!(stack_a == value))
+				{
+					rotate(&stack_a);
+					printf("ra");
+				}
+		}
+		else
+		{
+			while (!(stack_a == value || stack_b == value->neighbor))
+			{
+				r_rotate(&stack_a);
+				r_rotate(&stack_b);
+				printf("rrr");
+			}
+			if (value == stack_a)
+				while (!(stack_b == value->neighbor))
+				{
+					r_rotate(&stack_b);
+					printf("rrb");
+				}
+			else
+				while (!(stack_a == value))
+				{
+					r_rotate(&stack_a);
+					printf("rra");
+				}
 		}
 	}
-	return (min_moves);
+	//push(&stack_a, &stack_b);
 }

@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 13:41:48 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/14 22:56:26 by jibot            ###   ########.fr       */
+/*   Updated: 2022/02/16 19:47:55 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int		is_sorted(t_int *stack);
 int		get_min(t_int *stack);
 int		get_max(t_int *stack);
 int		stacklen(t_int *stack);
+int		which_half(t_int *value, t_int *stack);
 t_int	*ft_stacklast(t_int *stack);
 t_int	*new_int(int nb);
 void	stackadd(t_int **slist, t_int *new);
@@ -38,6 +39,7 @@ void	push(t_int **slist1, t_int **slist2);
 void	swap(t_int **slist);
 void	rotate(t_int **slist);
 void	r_rotate(t_int **slist);
+void	push_swap(t_int *stack_a, t_int *stack_b);
 
 
 #endif
