@@ -206,12 +206,15 @@ void	r_rotate(t_int **slist)
 int	is_sorted(t_int *stack)
 {
 	t_int	*cpy;
+	int	i;
 
+	i = -1;
 	cpy = stack;
-	while (cpy->next)
+	while (++i < stacklen(stack))
 	{
-		if (cpy->pos != cpy->sort_value)
+		if (cpy->sort_value != cpy->next->sort_value + 1)
 			return (0);
+		if (cpy->next)
 		cpy = cpy->next;
 	}
 	return (1);
@@ -292,26 +295,25 @@ void	push_swap(t_int *stack_a, t_int *stack_b)
 	int		half_a;
 	int		half_b;
 
-	printf("hello");
 	set_pos(stack_a);
 	set_pos(stack_b);
 	value = moves_calc(stack_a, stack_b);
 	half_a = which_half(value, stack_a);
 	half_b = which_half(value->neighbor, stack_b);
 	
-	/*if (half_a != half_b && Vabs(half_a * stacklen(stack_a) - value->pos) + Vabs(half_b * stacklen(stack_b) - value->neighbor->pos) < ft_min(Vabs(half_b * stacklen(stack_a) - value->pos), Vabs(half_a * stacklen(stack_b) - value->neighbor->pos)))
+	if (half_a != half_b && Vabs(half_a * stacklen(stack_a) - value->pos) + Vabs(half_b * stacklen(stack_b) - value->neighbor->pos) < ft_min(Vabs(half_b * stacklen(stack_a) - value->pos), Vabs(half_a * stacklen(stack_b) - value->neighbor->pos)))
 		{
 			if (half_a == 0)
 			{
 				while (stack_a != value)
 				{
 					rotate(&stack_a);
-					printf("ra");
+					printf("ra\n");
 				}
 				while (stack_b != value->neighbor)
 				{
 					r_rotate(&stack_b);
-					printf("rrb");
+					printf("rrb\n");
 				}
 			}
 			else
@@ -319,12 +321,12 @@ void	push_swap(t_int *stack_a, t_int *stack_b)
 				while (stack_a != value)
 				{
 					r_rotate(&stack_a);
-					printf("rra");
+					printf("rra\n");
 				}
 				while (stack_b != value->neighbor)
 				{
 					rotate(&stack_b);
-					printf("rb");
+					printf("rb\n");
 				}
 			}
 		}
@@ -336,19 +338,19 @@ void	push_swap(t_int *stack_a, t_int *stack_b)
 			{
 				rotate(&stack_a);
 				rotate(&stack_b);
-				printf("rr");
+				printf("rr\n");
 			}
 			if (value == stack_a)
 				while (!(stack_b == value->neighbor))
 				{
 					rotate(&stack_b);
-					printf("rb");
+					printf("rb\n");
 				}
 			else
 				while (!(stack_a == value))
 				{
 					rotate(&stack_a);
-					printf("ra");
+					printf("ra\n");
 				}
 		}
 		else
@@ -357,21 +359,21 @@ void	push_swap(t_int *stack_a, t_int *stack_b)
 			{
 				r_rotate(&stack_a);
 				r_rotate(&stack_b);
-				printf("rrr");
+				printf("rrr\n");
 			}
 			if (value == stack_a)
 				while (!(stack_b == value->neighbor))
 				{
 					r_rotate(&stack_b);
-					printf("rrb");
+					printf("rrb\n");
 				}
 			else
 				while (!(stack_a == value))
 				{
 					r_rotate(&stack_a);
-					printf("rra");
+					printf("rra\n");
 				}
 		}
-	}*/
-	//push(&stack_a, &stack_b);
+	}
+	push(&stack_a, &stack_b);
 }

@@ -56,10 +56,9 @@ int main(int argc, char **argv)
 	
 	i = -1;
 	stack_a = new_int(ft_atoi(argv[1]));
-	stack_b = new_int(0);
 	get_values(stack_a, argv);
 
-	while (++i < 3)
+	while (++i < 2)
 		push(&stack_a, &stack_b);
 
 	start = stack_a;
@@ -69,20 +68,20 @@ int main(int argc, char **argv)
 		start = start->next;
 	}
 	printf("%i\n", start->sort_value);
-	printf("fuck");
-	push_swap(stack_a, stack_b);
+	//while (!is_sorted(stack_a))
+	//push_swap(stack_a, stack_b);
 	start = stack_a;
 	while (start->next)
 	{
-		printf("%i\n", start->sort_value);
+		printf("a: %i\n", start->sort_value);
 		start = start->next;
 	}
-	printf("%i\n", start->sort_value);
-
-	/*while (start->next)
+	printf("a: %i\n", start->sort_value);
+	start = stack_b;
+	while (start->next)
 	{
-		printf("%i || %i\n", start->nb, start->sort_value);
+		printf("b: %i\n", start->sort_value);
 		start = start->next;
 	}
-	printf("%i || %i\n", start->nb, start->sort_value);*/
+	printf("b: %i\n", start->sort_value);	
 }
