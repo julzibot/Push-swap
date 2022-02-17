@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 13:36:43 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/16 20:17:42 by jibot            ###   ########.fr       */
+/*   Updated: 2022/02/17 17:12:22 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,13 @@ int main(int argc, char **argv)
 
 	while (++i < 2)
 		push(&stack_a, &stack_b);
-
+	start = stack_b;
+	while (start->next)
+	{
+		printf("b: %i\n", start->sort_value);
+		start = start->next;
+	}
+	printf("b: %i\n", start->sort_value);
 	start = stack_a;
 	while (start->next)
 	{
@@ -68,8 +74,8 @@ int main(int argc, char **argv)
 		start = start->next;
 	}
 	printf("%i\n", start->sort_value);
-	//while (!is_sorted(stack_a))
-	//push_swap(stack_a, stack_b);
+	//while (stacklen(stack_a) > 0)
+	push_swap(stack_a, stack_b);
 	start = stack_a;
 	while (start->next)
 	{

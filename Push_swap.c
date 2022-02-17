@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 20:33:00 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/16 21:46:23 by jibot            ###   ########.fr       */
+/*   Updated: 2022/02/17 19:31:09 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,14 @@ int	ft_min(int a, int b)
 
 t_int	*ft_stacklast(t_int *stack)
 {
+	t_int	*last;
+
+	last = stack;
 	if (!stack)
 		return (0);
-	while (stack->next)
-		stack = stack->next;
-	return (stack);
+	while (last->next)
+		last = last->next;
+	return (last);
 }
 
 t_int	*new_int(int nb)
@@ -161,6 +164,7 @@ void	push(t_int **slist1, t_int **slist2)
 	temp = *slist2;
 	*slist2 = *slist1;
 	*slist1 = stack1->next;
+	//stack1 = *slist2;
 	stack1->next = temp;
 }
 
@@ -228,7 +232,10 @@ void	set_pos(t_int *stack)
 	i = -1;
 	cpy = stack;
 	if (stacklen(stack) == 1)
+	{
 		stack->pos = 0;
+		return ;
+	}
 	while (++i < stacklen(stack))
 	{
 		cpy->pos = i;
@@ -257,9 +264,12 @@ void	get_moves(t_int *value, t_int *stack_a, t_int *stack_b)
 	moves = 0;
 	half_a = which_half(value, stack_a);
 	temp = stack_b;
-	while (!(value->sort_value > temp->sort_value && value->sort_value < temp->next->sort_value))
+	while (temp->next && !(value->sort_value > temp->sort_value && value->sort_value < temp->next->sort_value))
 		temp = temp->next;
-	value->neighbor = temp->next;
+	if (temp->next)
+		value->neighbor = temp->next;
+	else
+		value->neighbor = stack_b;
 	half_b = which_half(value->neighbor, stack_b);
 	if (half_a == half_b)
 		value->moves = ft_max(Vabs(half_a * stacklen(stack_a) - value->pos), Vabs(half_b * stacklen(stack_b) - value->neighbor->pos));
@@ -298,8 +308,11 @@ void	push_swap(t_int *stack_a, t_int *stack_b)
 	set_pos(stack_a);
 	set_pos(stack_b);
 	value = moves_calc(stack_a, stack_b);
+	printf ("|| %i ||\n", value->sort_value);
 	half_a = which_half(value, stack_a);
+	printf ("-%i\n", half_a);
 	half_b = which_half(value->neighbor, stack_b);
+	printf ("-%i\n", half_b);
 	
 	if (half_a != half_b && Vabs(half_a * stacklen(stack_a) - value->pos) + Vabs(half_b * stacklen(stack_b) - value->neighbor->pos) < ft_min(Vabs(half_b * stacklen(stack_a) - value->pos), Vabs(half_a * stacklen(stack_b) - value->neighbor->pos)))
 		{
@@ -313,7 +326,7 @@ void	push_swap(t_int *stack_a, t_int *stack_b)
 				while (stack_b != value->neighbor)
 				{
 					r_rotate(&stack_b);
-					printf("rrb\n");
+					printf("1 : rrb\n");
 				}
 			}
 			else
@@ -361,11 +374,11 @@ void	push_swap(t_int *stack_a, t_int *stack_b)
 				r_rotate(&stack_b);
 				printf("rrr\n");
 			}
-			if (value == stack_a)
+			if (stack_a == value)
 				while (!(stack_b == value->neighbor))
 				{
 					r_rotate(&stack_b);
-					printf("rrb\n");
+					printf("2 : rrb\n");
 				}
 			else
 				while (!(stack_a == value))
