@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 13:36:43 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/17 17:12:22 by jibot            ###   ########.fr       */
+/*   Updated: 2022/02/21 05:01:48 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ int main(int argc, char **argv)
 		start = start->next;
 	}
 	printf("%i\n", start->sort_value);
-	//while (stacklen(stack_a) > 0)
-	push_swap(stack_a, stack_b);
+	while (stacklen(stack_a) > 1)
+		push_swap(&stack_a, &stack_b);
 	start = stack_a;
 	while (start->next)
 	{
@@ -89,5 +89,22 @@ int main(int argc, char **argv)
 		printf("b: %i\n", start->sort_value);
 		start = start->next;
 	}
-	printf("b: %i\n", start->sort_value);	
+	printf("b: %i\n", start->sort_value);
+	printf("\n         -----------          \n");
+	while (stacklen(stack_b) > 1)
+		push(&stack_b, &stack_a);
+	start = stack_a;
+	while (start->next)
+	{
+		printf("a: %i\n", start->sort_value);
+		start = start->next;
+	}
+	printf("a: %i\n", start->sort_value);
+	start = stack_b;
+	while (start->next)
+	{
+		printf("b: %i\n", start->sort_value);
+		start = start->next;
+	}
+	printf("b: %i\n", start->sort_value);
 }
