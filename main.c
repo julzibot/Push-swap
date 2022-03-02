@@ -52,10 +52,12 @@ int main(int argc, char **argv)
 	t_int	*stack_a;
 	t_int	*stack_b;
 	t_int	*start;
+	t_int	*temp;
 	int	i;
 	
 	i = -1;
 	stack_a = new_int(ft_atoi(argv[1]));
+	stack_b = NULL;
 	get_values(stack_a, argv);
 
 	while (++i < 2)
@@ -90,9 +92,23 @@ int main(int argc, char **argv)
 		start = start->next;
 	}
 	printf("b: %i\n", start->sort_value);
+	
+	
 	printf("\n         -----------          \n");
-	while (stacklen(stack_b) > 1)
+		
+	start = stack_b;
+	temp = stack_a;
+	while (start->sort_value != temp->sort_value - 1)
+	{
+		rotate(&stack_b);
+		start = stack_b;
+	}
+	while (start->next)
+	{
+		start = start->next;
 		push(&stack_b, &stack_a);
+	}
+	push(&stack_b, &stack_a);
 	start = stack_a;
 	while (start->next)
 	{
@@ -100,11 +116,4 @@ int main(int argc, char **argv)
 		start = start->next;
 	}
 	printf("a: %i\n", start->sort_value);
-	start = stack_b;
-	while (start->next)
-	{
-		printf("b: %i\n", start->sort_value);
-		start = start->next;
-	}
-	printf("b: %i\n", start->sort_value);
 }

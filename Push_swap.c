@@ -140,6 +140,8 @@ int	stacklen(t_int *stack)
 	t_int	*cpy;
 
 	len = 0;
+	if (stack == NULL)
+		return (0);
 	cpy = stack;
 	while (cpy->next)
 	{
@@ -171,8 +173,10 @@ void	push(t_int **slist1, t_int **slist2)
 	stack1 = *slist1;
 	temp = *slist2;
 	*slist2 = *slist1;
-	//if (stack1->next)
-	*slist1 = stack1->next;
+	if (stack1->next)
+		*slist1 = stack1->next;
+	else
+		*slist1 = NULL;
 	stack1 = *slist2;
 	stack1->next = temp;
 }
@@ -258,7 +262,7 @@ int	which_half(t_int *value, t_int *stack)
 	t_int	*temp;
 
 	temp = value;
-	if (temp->pos + 1 <= stacklen(stack) / 2)
+	if (2 * (temp->pos + 1) <= stacklen(stack) + 1)
 		return (0);
 	return (1);
 }	
@@ -273,7 +277,7 @@ void	get_moves(t_int *value, t_int **stack_a, t_int **stack_b)
 	temp = *stack_b;
 	//if (value->sort_value > temp->sort_value && value->sort_value < ft_stacklast(temp)->sort_value)
 	//	value->neighbor = temp;
-	while (temp->next && !(value->sort_value > temp->sort_value && value->sort_value < temp->next->sort_value))
+	while (temp->next && !(value->sort_value < temp->sort_value && value->sort_value > temp->next->sort_value))
 		temp = temp->next;
 	if (temp->next)
 		value->neighbor = temp->next;
