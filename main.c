@@ -145,14 +145,18 @@ int main(int argc, char **argv)
 			r_rotate (&stack_b);
 			printf("rrb\n");
 		}
+		moves++;
 	}
 	while (start->next)
 	{
 		start = start->next;
 		push(&stack_b, &stack_a);
+		printf("pa\n");
 		moves++;
 	}
 	push(&stack_b, &stack_a);
+	printf("pa\n");
+	moves++;
 	start = stack_a;
 	while (start->next)
 	{

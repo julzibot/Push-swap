@@ -329,7 +329,7 @@ int	push_swap(t_int **stack_a, t_int **stack_b)
 				while (*stack_b != value->neighbor)
 				{
 					r_rotate(stack_b);
-					printf("1 : rrb\n");
+					printf("rrb\n");
 					moves++;
 				}
 			}
@@ -388,7 +388,7 @@ int	push_swap(t_int **stack_a, t_int **stack_b)
 				while (!(*stack_b == value->neighbor))
 				{
 					r_rotate(stack_b);
-					printf("2 : rrb\n");
+					printf("rrb\n");
 					moves++;
 				}
 			else
@@ -401,6 +401,7 @@ int	push_swap(t_int **stack_a, t_int **stack_b)
 		}
 	}
 	push(stack_a, stack_b);
+	printf("pb\n");
 	moves++;
 	return(moves);
 }
