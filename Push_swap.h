@@ -26,6 +26,7 @@ typedef struct s_int
 	struct	s_int	*next;
 }	t_int;
 
+int		Vabs(int a);
 int		is_svalued(t_int *stack);
 int		is_sorted(t_int *stack);
 int		get_min(t_int *stack);

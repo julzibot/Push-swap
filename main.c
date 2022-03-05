@@ -52,7 +52,6 @@ int main(int argc, char **argv)
 	t_int	*stack_b;
 	t_int	*start;
 	t_int	*temp;
-	t_int	**sa;
 	int	i;
 	int	moves;
 	int	init_moves;
@@ -72,10 +71,18 @@ int main(int argc, char **argv)
 	start = stack_a;
 	while (start->next && start->sort_value > get_min(stack_a))
 		start = start->next;
-	while (++i < start->pos)
+	while (++i < Vabs(which_half(start, stack_a) * stacklen(stack_a) - start->pos))
 	{
-		rotate (&stack_a);
-		printf("ra\n");
+		if (which_half(start, stack_a) == 0)
+		{
+			rotate (&stack_a);
+			printf("ra\n");
+		}
+		else if (which_half(start, stack_a) == 1)
+		{
+			r_rotate (&stack_a);
+			printf("rra\n");
+		}
 		init_moves++;
 	}
 	push(&stack_a, &stack_b);
@@ -85,10 +92,18 @@ int main(int argc, char **argv)
 	start = stack_a;
 	while (start->next && start->sort_value < get_max(stack_a))
 		start = start->next;
-	while (++i < start->pos)
+	while (++i < Vabs(which_half(start, stack_a) * stacklen(stack_a) - start->pos))
 	{
-		rotate (&stack_a);
-		printf("ra\n");
+		if (which_half(start, stack_a) == 0)
+		{
+			rotate (&stack_a);
+			printf("ra\n");
+		}
+		else if (which_half(start, stack_a) == 1)
+		{
+			r_rotate (&stack_a);
+			printf("rra\n");
+		}
 		init_moves++;
 	}
 	push(&stack_a, &stack_b);
@@ -112,13 +127,24 @@ int main(int argc, char **argv)
 	start = stack_a;
 	moves += init_moves;
 	
+	i = -1;
+	set_pos(stack_b);
 	start = stack_b;
 	temp = stack_a;
 	while (start->sort_value != temp->sort_value - 1)
+		start = start->next;
+	while (++i < Vabs(which_half(start, stack_b) * stacklen(stack_b) - start->pos))
 	{
-		rotate(&stack_b);
-		start = stack_b;
-		moves++;
+		if (which_half(start, stack_b) == 0)
+		{
+			rotate (&stack_b);
+			printf("rb\n");
+		}
+		else if (which_half(start, stack_b) == 1)
+		{
+			r_rotate (&stack_b);
+			printf("rrb\n");
+		}
 	}
 	while (start->next)
 	{
