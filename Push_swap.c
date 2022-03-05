@@ -267,7 +267,7 @@ void	get_moves(t_int *value, t_int **stack_a, t_int **stack_b)
 
 	half_a = which_half(value, *stack_a);
 	temp = *stack_b;
-	/*if (value->nb < get_min(*stack_b) || value->sort_value > get_max(*stack_b))
+	/*/if (value->nb < get_min(*stack_b) || value->sort_value > get_max(*stack_b))
 	{
 		while (temp->next && temp->sort_value != get_max(*stack_b))
 			temp = temp->next;
