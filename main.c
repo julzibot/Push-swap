@@ -53,15 +53,31 @@ int main(int argc, char **argv)
 	t_int	*stack_b;
 	t_int	*start;
 	t_int	*temp;
+	t_int	**sa;
 	int	i;
 	
 	i = -1;
 	stack_a = new_int(ft_atoi(argv[1]));
 	stack_b = NULL;
 	get_values(stack_a, argv);
+	set_pos(stack_a);
 
-	while (++i < 2)
-		push(&stack_a, &stack_b);
+	start = stack_a;
+	while (start->next && start->sort_value > get_min(stack_a))
+		start = start->next;
+	while (++i < start->pos)
+		rotate (&stack_a);
+	push(&stack_a, &stack_b);
+
+	i = -1;
+	set_pos(stack_a);
+	start = stack_a;
+	while (start->next && start->sort_value < get_max(stack_a))
+		start = start->next;
+	while (++i < start->pos)
+		rotate (&stack_a);
+	push(&stack_a, &stack_b);
+	
 	start = stack_b;
 	while (start->next)
 	{
@@ -85,13 +101,6 @@ int main(int argc, char **argv)
 		start = start->next;
 	}
 	printf("a: %i\n", start->sort_value);
-	start = stack_b;
-	while (start->next)
-	{
-		printf("b: %i\n", start->sort_value);
-		start = start->next;
-	}
-	printf("b: %i\n", start->sort_value);
 	
 	
 	printf("\n         -----------          \n");
@@ -112,8 +121,8 @@ int main(int argc, char **argv)
 	start = stack_a;
 	while (start->next)
 	{
-		printf("a: %i\n", start->sort_value);
+		printf("a: %i | %i\n", start->sort_value, start->nb);
 		start = start->next;
 	}
-	printf("a: %i\n", start->sort_value);
+	printf("a: %i | %i\n", start->sort_value, start->nb);
 }

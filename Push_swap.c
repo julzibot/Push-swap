@@ -56,14 +56,6 @@ t_int	*new_int(int nb)
 	return (new);
 }
 
-t_int	**new_list(t_int *start)
-{
-	t_int	**list;
-
-	list = &start;
-	return (list);
-}
-
 int	is_svalued(t_int *stack)
 {
 	int	unsorted;
@@ -87,12 +79,10 @@ int	is_svalued(t_int *stack)
 int	get_min(t_int *stack)
 {
 	int		min;
-	int		unsorted;
 	t_int	*cpy;
 
 	min = INT_MAX;
 	cpy = stack;
-	unsorted = 0;
 
 	if (is_svalued(stack) == 1)
 	{
@@ -104,6 +94,8 @@ int	get_min(t_int *stack)
 				min = cpy->sort_value;
 			cpy = cpy->next;
 		}
+		if (cpy->sort_value < min)
+			min = cpy->sort_value;
 	}
 	while (cpy->next)
 	{
@@ -275,9 +267,14 @@ void	get_moves(t_int *value, t_int **stack_a, t_int **stack_b)
 
 	half_a = which_half(value, *stack_a);
 	temp = *stack_b;
-	//if (value->sort_value > temp->sort_value && value->sort_value < ft_stacklast(temp)->sort_value)
-	//	value->neighbor = temp;
-	while (temp->next && !(value->sort_value < temp->sort_value && value->sort_value > temp->next->sort_value))
+	/*if (value->nb < get_min(*stack_b) || value->sort_value > get_max(*stack_b))
+	{
+		while (temp->next && temp->sort_value != get_max(*stack_b))
+			temp = temp->next;
+		value->neighbor = temp;
+		return ;
+	}*/
+	while (temp->next && (!(value->sort_value < temp->sort_value && value->sort_value > temp->next->sort_value)))
 		temp = temp->next;
 	if (temp->next)
 		value->neighbor = temp->next;
@@ -287,7 +284,7 @@ void	get_moves(t_int *value, t_int **stack_a, t_int **stack_b)
 	if (half_a == half_b)
 		value->moves = ft_max(Vabs(half_a * stacklen(*stack_a) - value->pos), Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos));
 	else
-		value->moves = ft_min(Vabs(half_a * stacklen(*stack_a) - value->pos) + Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos), ft_min(Vabs(half_b * stacklen(*stack_a) - value->pos), Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos)));
+		value->moves = ft_min(Vabs(half_a * stacklen(*stack_a) - value->pos) + Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos), ft_min(ft_max(Vabs(half_b * stacklen(*stack_a) - value->pos), Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos)), ft_max(Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos), Vabs(half_a * stacklen(*stack_a) - value->pos))));
 }
 
 t_int	*moves_calc(t_int *stack_a, t_int *stack_b)
@@ -322,13 +319,13 @@ void	push_swap(t_int **stack_a, t_int **stack_b)
 	set_pos(*stack_a);
 	set_pos(*stack_b);
 	value = moves_calc(*stack_a, *stack_b);
-	printf ("|| %i ||\n", value->sort_value);
+	printf ("|| %i value:%i ||\n", value->pos, value->sort_value);
 	half_a = which_half(value, *stack_a);
 	printf ("-%i\n", half_a);
 	half_b = which_half(value->neighbor, *stack_b);
 	printf ("-%i\n", half_b);
 	
-	if (half_a != half_b && Vabs(half_a * stacklen(*stack_a) - value->pos) + Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos) < ft_min(Vabs(half_b * stacklen(*stack_a) - value->pos), Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos)))
+	if (half_a != half_b && Vabs(half_a * stacklen(*stack_a) - value->pos) + Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos) < ft_min(ft_max(Vabs(half_b * stacklen(*stack_a) - value->pos), Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos)), ft_max(Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos), Vabs(half_a * stacklen(*stack_a) - value->pos))))
 		{
 			if (half_a == 0)
 			{
@@ -359,7 +356,7 @@ void	push_swap(t_int **stack_a, t_int **stack_b)
 		}
 	else
 	{
-		if ((half_a == half_b && half_b == 0) || (Vabs(half_b * stacklen(*stack_a) - value->pos) < Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos) && half_b == 0))
+		if ((half_a == half_b && half_b == 0) || ft_max(Vabs(half_b * stacklen(*stack_a) - value->pos), Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos)) < ft_max(Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos), Vabs(half_a * stacklen(*stack_a) - value->pos)))
 		{
 			while (!(*stack_a == value || *stack_b == value->neighbor))
 			{

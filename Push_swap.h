@@ -35,6 +35,7 @@ int		which_half(t_int *value, t_int *stack);
 t_int	*ft_stacklast(t_int *stack);
 t_int	*new_int(int nb);
 t_int	**new_list(t_int *start);
+void	set_pos(t_int *stack);
 void	stackadd(t_int **slist, t_int *new);
 void	push(t_int **slist1, t_int **slist2);
 void	swap(t_int **slist);
