@@ -48,14 +48,21 @@ void	get_values(t_int *stack, char **argv)
 
 int main(int argc, char **argv)
 {
-	(void)argc;
 	t_int	*stack_a;
 	t_int	*stack_b;
 	t_int	*start;
 	t_int	*temp;
 	t_int	**sa;
 	int	i;
+	int	moves;
+	int	init_moves;
 	
+	if (argc == 2)
+	{
+		printf ("error : not enough arguments\n");
+		return(0);
+	}
+	init_moves = 0;
 	i = -1;
 	stack_a = new_int(ft_atoi(argv[1]));
 	stack_b = NULL;
@@ -66,7 +73,11 @@ int main(int argc, char **argv)
 	while (start->next && start->sort_value > get_min(stack_a))
 		start = start->next;
 	while (++i < start->pos)
+	{
 		rotate (&stack_a);
+		printf("ra\n");
+		init_moves++;
+	}
 	push(&stack_a, &stack_b);
 
 	i = -1;
@@ -75,7 +86,11 @@ int main(int argc, char **argv)
 	while (start->next && start->sort_value < get_max(stack_a))
 		start = start->next;
 	while (++i < start->pos)
+	{
 		rotate (&stack_a);
+		printf("ra\n");
+		init_moves++;
+	}
 	push(&stack_a, &stack_b);
 	
 	start = stack_b;
@@ -93,29 +108,23 @@ int main(int argc, char **argv)
 	}
 	printf("%i\n", start->sort_value);
 	while (stacklen(stack_a) > 1)
-		push_swap(&stack_a, &stack_b);
+		moves = push_swap(&stack_a, &stack_b);
 	start = stack_a;
-	while (start->next)
-	{
-		printf("a: %i\n", start->sort_value);
-		start = start->next;
-	}
-	printf("a: %i\n", start->sort_value);
+	moves += init_moves;
 	
-	
-	printf("\n         -----------          \n");
-		
 	start = stack_b;
 	temp = stack_a;
 	while (start->sort_value != temp->sort_value - 1)
 	{
 		rotate(&stack_b);
 		start = stack_b;
+		moves++;
 	}
 	while (start->next)
 	{
 		start = start->next;
 		push(&stack_b, &stack_a);
+		moves++;
 	}
 	push(&stack_b, &stack_a);
 	start = stack_a;
@@ -125,4 +134,5 @@ int main(int argc, char **argv)
 		start = start->next;
 	}
 	printf("a: %i | %i\n", start->sort_value, start->nb);
+	printf("total moves : %i\n", moves);
 }
