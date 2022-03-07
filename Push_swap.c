@@ -303,7 +303,7 @@ t_int	*moves_calc(t_int *stack_a, t_int *stack_b)
 	return (ret);
 }
 
-int	push_swap(t_int **stack_a, t_int **stack_b)
+int	push_sort(t_int **stack_a, t_int **stack_b)
 {
 	t_int	*value;
 	int		half_a;

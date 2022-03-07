@@ -46,6 +46,83 @@ void	get_values(t_int *stack, char **argv)
 	}
 }
 
+int	short_rot(t_int	*start, t_int **stack, char stack_letter)
+{
+	int	i;
+	int	moves;
+
+	i = -1;
+	moves = 0;
+	while (++i < Vabs(which_half(start, *stack) * stacklen(*stack) - start->pos))
+	{
+		if (which_half(start, *stack) == 0)
+		{
+			rotate (stack);
+			printf("r%c\n", stack_letter);
+		}
+		else if (which_half(start, *stack) == 1)
+		{
+			r_rotate (stack);
+			printf("rr%c\n", stack_letter);
+		}
+		moves++;
+	}
+	return (moves);
+}
+
+int	push_minmax(t_int **stack_a, t_int **stack_b)
+{
+	int	i;
+	int	init_moves;
+	t_int	*start;
+
+	init_moves = 0;
+	i = -1;
+	set_pos(*stack_a);
+	start = *stack_a;
+	while (start->next && start->sort_value > get_min(*stack_a))
+		start = start->next;
+	init_moves += short_rot(start, stack_a, 'a');
+	push(stack_a, stack_b);
+	init_moves++;
+	i = -1;
+	set_pos(*stack_a);
+	start = *stack_a;
+	while (start->next && start->sort_value < get_max(*stack_a))
+		start = start->next;
+	init_moves += short_rot(start, stack_a, 'a');
+	push(stack_a, stack_b);
+	init_moves++;
+	return (init_moves);
+}
+
+int	final_push(t_int **stack_b, t_int **stack_a)
+{
+	int	i;
+	int	moves;
+	t_int	*start;
+	t_int	*temp;
+
+	i = -1;
+	moves = 0;
+	set_pos(*stack_b);
+	start = *stack_b;
+	temp = *stack_a;
+	while (start->sort_value != temp->sort_value - 1)
+		start = start->next;
+	moves += short_rot(start, stack_b, 'b');
+	while (start->next)
+	{
+		start = start->next;
+		push(stack_b, stack_a);
+		printf("pa\n");
+		moves++;
+	}
+	push(stack_b, stack_a);
+	printf("pa\n");
+	return (moves + 1);
+}
+
 int main(int argc, char **argv)
 {
 	t_int	*stack_a;
@@ -62,101 +139,16 @@ int main(int argc, char **argv)
 		return(0);
 	}
 	init_moves = 0;
-	i = -1;
+	moves = 0;
 	stack_a = new_int(ft_atoi(argv[1]));
 	stack_b = NULL;
 	get_values(stack_a, argv);
-	set_pos(stack_a);
-
-	start = stack_a;
-	while (start->next && start->sort_value > get_min(stack_a))
-		start = start->next;
-	while (++i < Vabs(which_half(start, stack_a) * stacklen(stack_a) - start->pos))
-	{
-		if (which_half(start, stack_a) == 0)
-		{
-			rotate (&stack_a);
-			printf("ra\n");
-		}
-		else if (which_half(start, stack_a) == 1)
-		{
-			r_rotate (&stack_a);
-			printf("rra\n");
-		}
-		init_moves++;
-	}
-	push(&stack_a, &stack_b);
-
-	i = -1;
-	set_pos(stack_a);
-	start = stack_a;
-	while (start->next && start->sort_value < get_max(stack_a))
-		start = start->next;
-	while (++i < Vabs(which_half(start, stack_a) * stacklen(stack_a) - start->pos))
-	{
-		if (which_half(start, stack_a) == 0)
-		{
-			rotate (&stack_a);
-			printf("ra\n");
-		}
-		else if (which_half(start, stack_a) == 1)
-		{
-			r_rotate (&stack_a);
-			printf("rra\n");
-		}
-		init_moves++;
-	}
-	push(&stack_a, &stack_b);
-	
-	start = stack_b;
-	while (start->next)
-	{
-		printf("b: %i\n", start->sort_value);
-		start = start->next;
-	}
-	printf("b: %i\n", start->sort_value);
-	start = stack_a;
-	while (start->next)
-	{
-		printf("%i\n", start->sort_value);
-		start = start->next;
-	}
-	printf("%i\n", start->sort_value);
+	init_moves = push_minmax(&stack_a, &stack_b);
 	while (stacklen(stack_a) > 1)
-		moves = push_swap(&stack_a, &stack_b);
-	start = stack_a;
+		moves = push_sort(&stack_a, &stack_b);
 	moves += init_moves;
-	
-	i = -1;
-	set_pos(stack_b);
-	start = stack_b;
-	temp = stack_a;
-	while (start->sort_value != temp->sort_value - 1)
-		start = start->next;
-	while (++i < Vabs(which_half(start, stack_b) * stacklen(stack_b) - start->pos))
-	{
-		if (which_half(start, stack_b) == 0)
-		{
-			rotate (&stack_b);
-			printf("rb\n");
-		}
-		else if (which_half(start, stack_b) == 1)
-		{
-			r_rotate (&stack_b);
-			printf("rrb\n");
-		}
-		moves++;
-	}
-	while (start->next)
-	{
-		start = start->next;
-		push(&stack_b, &stack_a);
-		printf("pa\n");
-		moves++;
-	}
-	push(&stack_b, &stack_a);
-	printf("pa\n");
-	moves++;
+	moves += final_push(&stack_b, &stack_a);
+//-----------------------------------------------------------------------//	
 	start = stack_a;
 	while (start->next)
 	{

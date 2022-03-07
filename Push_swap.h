@@ -42,7 +42,7 @@ void	push(t_int **slist1, t_int **slist2);
 void	swap(t_int **slist);
 void	rotate(t_int **slist);
 void	r_rotate(t_int **slist);
-int	push_swap(t_int **stack_a, t_int **stack_b);
+int	push_sort(t_int **stack_a, t_int **stack_b);
 
 
 #endif
