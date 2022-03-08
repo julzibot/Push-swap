@@ -70,6 +70,19 @@ int	short_rot(t_int	*start, t_int **stack, char stack_letter)
 	return (moves);
 }
 
+int	final_rot(t_int **stack)
+{
+	t_int	*temp;
+	int	moves;
+
+	set_pos(*stack);
+	temp = *stack;
+	while (temp->next && temp->sort_value > get_min(*stack))
+		temp = temp->next;
+	moves = short_rot(temp, stack, 'a');
+	return (moves);
+}
+
 int	push_minmax(t_int **stack_a, t_int **stack_b)
 {
 	int	i;
@@ -98,12 +111,10 @@ int	push_minmax(t_int **stack_a, t_int **stack_b)
 
 int	final_push(t_int **stack_b, t_int **stack_a)
 {
-	int	i;
 	int	moves;
 	t_int	*start;
 	t_int	*temp;
 
-	i = -1;
 	moves = 0;
 	set_pos(*stack_b);
 	start = *stack_b;
@@ -128,8 +139,6 @@ int main(int argc, char **argv)
 	t_int	*stack_a;
 	t_int	*stack_b;
 	t_int	*start;
-	t_int	*temp;
-	int	i;
 	int	moves;
 	int	init_moves;
 	
@@ -138,16 +147,20 @@ int main(int argc, char **argv)
 		printf ("error : not enough arguments\n");
 		return(0);
 	}
-	init_moves = 0;
 	moves = 0;
 	stack_a = new_int(ft_atoi(argv[1]));
 	stack_b = NULL;
 	get_values(stack_a, argv);
 	init_moves = push_minmax(&stack_a, &stack_b);
 	while (stacklen(stack_a) > 1)
+	{
+		set_pos(stack_a);
+		set_pos(stack_b);
 		moves = push_sort(&stack_a, &stack_b);
+	}
 	moves += init_moves;
 	moves += final_push(&stack_b, &stack_a);
+	moves += final_rot(&stack_a);
 //-----------------------------------------------------------------------//	
 	start = stack_a;
 	while (start->next)
