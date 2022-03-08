@@ -52,6 +52,8 @@ t_int	*new_int(int nb)
 	new = malloc(sizeof(t_int));
 	new->nb = nb;
 	new->next = NULL;
+	new->neighbor = NULL;
+	new->couple = NULL;
 	new->sort_value = -1;
 	return (new);
 }
@@ -224,7 +226,7 @@ int	is_sorted(t_int *stack)
 		if (cpy->sort_value != cpy->next->sort_value + 1)
 			return (0);
 		if (cpy->next)
-		cpy = cpy->next;
+			cpy = cpy->next;
 	}
 	return (1);
 }
@@ -280,32 +282,68 @@ void	get_moves(t_int *value, t_int **stack_a, t_int **stack_b)
 		value->moves = ft_min(Vabs(half_a * stacklen(*stack_a) - value->pos) + Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos), ft_min(ft_max(Vabs(half_b * stacklen(*stack_a) - value->pos), Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos)), ft_max(Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos), Vabs(half_a * stacklen(*stack_a) - value->pos))));
 }
 
+void	get_couples(t_int **stack_a, t_int **stack_b)
+{
+	t_int	*start;
+	int	i;
+
+	i = 0;
+	start = *stack_a;
+	set_pos(*stack_a);
+	set_pos(*stack_b);
+	while (++i < stacklen(*stack_a) - 4)
+	{
+		if (Vabs(start->next->neighbor->pos - start->neighbor->pos) < 5)
+			start->couple = start->next;
+		else if (Vabs(start->next->next->neighbor->pos - start->neighbor->pos) < 4)
+			start->couple = start->next->next;
+		else if (Vabs(start->next->next->next->neighbor->pos - start->neighbor->pos) < 3)
+			start->couple = start->next->next->next;
+		if (start->next)
+			start = start->next;
+	}
+}
+
 t_int	*moves_calc(t_int *stack_a, t_int *stack_b)
 {
 	t_int	*temp;
 	t_int	*ret;
 	int	i;
+	int	min_moves;
 
 	i = 0;
+	set_pos(stack_a);
+	set_pos(stack_b);
 	temp = stack_a;
 	ret = temp;
-	ret->moves = INT_MAX;
+	min_moves = INT_MAX;
 	while (i < stacklen(stack_a))
 	{
 		get_moves(temp, &stack_a, &stack_b);
-		//printf("moves %i: %i\n", temp->pos, temp->moves);
-		if (temp->moves < ret->moves)
+		if (temp->moves < min_moves )
+		{
 			ret = temp;
+			min_moves = ret->moves;
+		}
+		
 		if (temp->next)
 			temp = temp->next;
 		i++;
+	}
+	//get_couples(&stack_a, &stack_b);
+	temp = stack_a;
+	while (temp->next)
+	{
+		if (temp->couple && Vabs(temp->couple->pos - temp->pos + temp->couple->neighbor->pos - temp->neighbor->pos) < min_moves)
+			ret = temp;
+		temp = temp->next;
 	}
 	return (ret);
 }
 
 int	push_sort(t_int **stack_a, t_int **stack_b)
 {
-	t_int	*value;
+	t_int		*value;
 	int		half_a;
 	int		half_b;
 	static	int	moves;
@@ -315,40 +353,40 @@ int	push_sort(t_int **stack_a, t_int **stack_b)
 	value = moves_calc(*stack_a, *stack_b);
 	half_a = which_half(value, *stack_a);
 	half_b = which_half(value->neighbor, *stack_b);
-	
+
 	if (half_a != half_b && Vabs(half_a * stacklen(*stack_a) - value->pos) + Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos) < ft_min(ft_max(Vabs(half_b * stacklen(*stack_a) - value->pos), Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos)), ft_max(Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos), Vabs(half_a * stacklen(*stack_a) - value->pos))))
+	{
+		if (half_a == 0)
 		{
-			if (half_a == 0)
+			while (*stack_a != value)
 			{
-				while (*stack_a != value)
-				{
-					rotate(stack_a);
-					printf("ra\n");
-					moves++;
-				}
-				while (*stack_b != value->neighbor)
-				{
-					r_rotate(stack_b);
-					printf("rrb\n");
-					moves++;
-				}
+				rotate(stack_a);
+				printf("ra\n");
+				moves++;
 			}
-			else
+			while (*stack_b != value->neighbor)
 			{
-				while (*stack_a != value)
-				{
-					r_rotate(stack_a);
-					printf("rra\n");
-					moves++;
-				}
-				while (*stack_b != value->neighbor)
-				{
-					rotate(stack_b);
-					printf("rb\n");
-					moves++;
-				}
+				r_rotate(stack_b);
+				printf("rrb\n");
+				moves++;
 			}
 		}
+		else
+		{
+			while (*stack_a != value)
+			{
+				r_rotate(stack_a);
+				printf("rra\n");
+				moves++;
+			}
+			while (*stack_b != value->neighbor)
+			{
+				rotate(stack_b);
+				printf("rb\n");
+				moves++;
+			}
+		}
+	}
 	else
 	{
 		if ((half_a == half_b && half_b == 0) || ft_max(Vabs(half_b * stacklen(*stack_a) - value->pos), Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos)) < ft_max(Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos), Vabs(half_a * stacklen(*stack_a) - value->pos)))

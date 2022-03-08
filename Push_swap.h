@@ -22,6 +22,7 @@ typedef struct s_int
 	int				delta;
 	int				pos;
 	int				moves;
+	struct	s_int	*couple;
 	struct	s_int	*neighbor;
 	struct	s_int	*next;
 }	t_int;
