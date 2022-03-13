@@ -16,7 +16,7 @@ CC		= gcc -Wall -Wextra -Werror
 
 RM		= rm -f
 
-SRCS	= Push_swap.c main.c ./libft/ft_isdigit.c ./libft/ft_atoi.c
+SRCS	= Push_swap.c main.c ./libft/ft_calloc.c ./libft/ft_split.c ./libft/ft_isdigit.c ./libft/ft_atoi.c
 
 all:		${NAME}
 

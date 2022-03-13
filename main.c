@@ -12,36 +12,72 @@
 
 #include "Push_swap.h"
 
-void	get_values(t_int *stack, char **argv)
+int	ft_arglen(char **arg)
+{
+	int	i;
+	int	j;
+	int	count;
+	char	**tab;
+
+	i = 0;
+	count = 0;
+	while (arg[++i])
+	{
+		j = -1;
+		tab = ft_split(arg[i], ' ');
+		while (tab[++j])
+			count++;
+	}
+	printf("args : %i\n", count);
+	return (count);
+}
+
+char	**arg_parsing(char **argv)
+{
+	int	i;
+	int	j;
+	int	count;
+	char	**tab;
+	char	**temp;
+
+	i = 0;
+	count = 0;
+	tab = malloc(sizeof(char*) * (ft_arglen(argv) + 1));
+	while (argv[++i])
+	{
+		j = -1;
+		temp = ft_split(argv[i], ' ');
+		while (temp[++j])
+		{
+			tab[count] = temp[j];
+			count++;
+		}
+	}
+	tab[count] = NULL;
+	return (tab);
+}
+
+void	get_values(t_int *stack, char **args)
 {
 	t_int	*start;
 	int i;
 	int ncount;
 	
-	i = 2;
+	i = 0;
 	ncount = 0;
 	start = stack;
-	while (argv[i])
-	{
-		stack = new_int(ft_atoi(argv[i]));
-		stackadd(&start, stack);
-		i++;
-		//free(stack);
-	}
+	while (args[++i])
+		stackadd(&start, new_int(ft_atoi(args[i])));
 	while (!is_svalued(start)) 
 	{
-		i = 0;
+		i = -1;
 		stack = start;
-		while (i < stacklen(start))
+		while (++i < stacklen(start))
 		{
 			if (stack->nb == get_min(start))
-			{
-				stack->sort_value = ncount;
-				ncount++;
-			}
+				stack->sort_value = ncount++;
 			if (stack->next)
 				stack = stack->next;
-			i++;
 		}
 	}
 }
@@ -139,18 +175,16 @@ int main(int argc, char **argv)
 	t_int	*stack_a;
 	t_int	*stack_b;
 	t_int	*start;
+	char	**args;
 	int	moves;
 	int	init_moves;
-	
-	if (argc == 2)
-	{
-		printf ("error : not enough arguments\n");
-		return(0);
-	}
+	(void)argc;
+
 	moves = 0;
-	stack_a = new_int(ft_atoi(argv[1]));
+	args = arg_parsing(argv);
+	stack_a = new_int(ft_atoi(args[0]));
 	stack_b = NULL;
-	get_values(stack_a, argv);
+	get_values(stack_a, args);
 	init_moves = push_minmax(&stack_a, &stack_b);
 	while (stacklen(stack_a) > 1)
 	{
