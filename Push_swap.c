@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 20:33:00 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/21 04:58:54 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/14 15:10:57 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	stackadd(t_int **slist, t_int *new)
 	last->next = new;
 }
 
-void	push(t_int **slist1, t_int **slist2)
+void	push(t_int **slist1, t_int **slist2, char letter)
 {
 	t_int	*temp;
 	t_int	*stack1;
@@ -172,6 +172,7 @@ void	push(t_int **slist1, t_int **slist2)
 		*slist1 = NULL;
 	stack1 = *slist2;
 	stack1->next = temp;
+	printf("p%c\n", letter);
 }
 
 void	swap(t_int **slist)
@@ -458,7 +459,6 @@ int	push_sort(t_int **stack_a, t_int **stack_b)
 		else
 			moves += rrr_case(stack_a, stack_b, value, move_count);
 	}
-	push(stack_a, stack_b);
-	printf("pb\n");
+	push(stack_a, stack_b, 'b');
 	return(moves + 1);
 }

@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 13:36:43 by jibot             #+#    #+#             */
-/*   Updated: 2022/02/21 05:01:48 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/14 14:59:50 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	ft_arglen(char **arg)
 		while (tab[++j])
 			count++;
 	}
-	printf("args : %i\n", count);
 	return (count);
 }
 
@@ -132,7 +131,7 @@ int	push_minmax(t_int **stack_a, t_int **stack_b)
 	while (start->next && start->sort_value > get_min(*stack_a))
 		start = start->next;
 	init_moves += short_rot(start, stack_a, 'a');
-	push(stack_a, stack_b);
+	push(stack_a, stack_b, 'b');
 	init_moves++;
 	i = -1;
 	set_pos(*stack_a);
@@ -140,7 +139,7 @@ int	push_minmax(t_int **stack_a, t_int **stack_b)
 	while (start->next && start->sort_value < get_max(*stack_a))
 		start = start->next;
 	init_moves += short_rot(start, stack_a, 'a');
-	push(stack_a, stack_b);
+	push(stack_a, stack_b, 'b');
 	init_moves++;
 	return (init_moves);
 }
@@ -161,12 +160,10 @@ int	final_push(t_int **stack_b, t_int **stack_a)
 	while (start->next)
 	{
 		start = start->next;
-		push(stack_b, stack_a);
-		printf("pa\n");
+		push(stack_b, stack_a, 'a');
 		moves++;
 	}
-	push(stack_b, stack_a);
-	printf("pa\n");
+	push(stack_b, stack_a, 'a');
 	return (moves + 1);
 }
 
@@ -199,9 +196,9 @@ int main(int argc, char **argv)
 	start = stack_a;
 	while (start->next)
 	{
-		printf("a: %i | %i\n", start->sort_value, start->nb);
+		//printf("a: %i | %i\n", start->sort_value, start->nb);
 		start = start->next;
 	}
-	printf("a: %i | %i\n", start->sort_value, start->nb);
-	printf("total moves : %i\n", moves);
+	//printf("a: %i | %i\n", start->sort_value, start->nb);
+	//printf("total moves : %i\n", moves);
 }
