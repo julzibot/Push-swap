@@ -6,11 +6,13 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 13:36:43 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/14 14:59:50 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/19 16:48:22 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Push_swap.h"
+
+void	free_tab(char **tab);
 
 int	ft_arglen(char **arg)
 {
@@ -26,16 +28,40 @@ int	ft_arglen(char **arg)
 		j = -1;
 		tab = ft_split(arg[i], ' ');
 		while (tab[++j])
+		{
 			count++;
+			free(tab[j]);
+		}
 	}
+	free(tab);
 	return (count);
+}
+
+char	**ft_tabdup(char **data)
+{
+	int		i;
+	char	**dup;
+
+	i = 0;
+	while (data[i])
+		i++;
+	dup = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (data[i])
+	{
+		dup[i] = data[i];
+		i++;
+	}
+	dup[i] = NULL;
+	//free(data);
+	return (dup);
 }
 
 char	**arg_parsing(char **argv)
 {
-	int	i;
-	int	j;
-	int	count;
+	int		i;
+	int		j;
+	int		count;
 	char	**tab;
 	char	**temp;
 
@@ -48,10 +74,13 @@ char	**arg_parsing(char **argv)
 		temp = ft_split(argv[i], ' ');
 		while (temp[++j])
 		{
-			tab[count] = temp[j];
+			tab[count] = ft_strdup(temp[j]);
+			free(temp[j]);
 			count++;
 		}
+		free_tab(temp);
 	}
+	free_tab(argv);
 	tab[count] = NULL;
 	return (tab);
 }
@@ -63,6 +92,7 @@ void	get_values(t_int *stack, char **args)
 	int ncount;
 	
 	i = 0;
+	
 	ncount = 0;
 	start = stack;
 	while (args[++i])
@@ -79,6 +109,7 @@ void	get_values(t_int *stack, char **args)
 				stack = stack->next;
 		}
 	}
+	free_tab(args);
 }
 
 int	short_rot(t_int	*start, t_int **stack, char stack_letter)
@@ -167,18 +198,42 @@ int	final_push(t_int **stack_b, t_int **stack_a)
 	return (moves + 1);
 }
 
+void	free_tab(char **tab)
+{
+	int	i;
+
+	i = -1;
+	while (++i)
+		free(tab[i]);
+	free(tab);
+}
+
+void	free_stack(t_int *stack)
+{
+	t_int	*temp;
+
+	while (stack->next)
+	{
+		temp = stack;
+		stack = stack->next;
+		temp->next = NULL;
+		free(temp);
+	}
+	free(stack);
+}
+
 int main(int argc, char **argv)
 {
 	t_int	*stack_a;
 	t_int	*stack_b;
-	t_int	*start;
 	char	**args;
-	int	moves;
-	int	init_moves;
+	int		moves;
+	int		init_moves;
 	(void)argc;
 
 	moves = 0;
-	args = arg_parsing(argv);
+	args = ft_tabdup(argv);
+	args = arg_parsing(args);
 	stack_a = new_int(ft_atoi(args[0]));
 	stack_b = NULL;
 	get_values(stack_a, args);
@@ -189,16 +244,9 @@ int main(int argc, char **argv)
 		set_pos(stack_b);
 		moves = push_sort(&stack_a, &stack_b);
 	}
-	moves += init_moves;
 	moves += final_push(&stack_b, &stack_a);
 	moves += final_rot(&stack_a);
-//-----------------------------------------------------------------------//	
-	start = stack_a;
-	while (start->next)
-	{
-		//printf("a: %i | %i\n", start->sort_value, start->nb);
-		start = start->next;
-	}
-	//printf("a: %i | %i\n", start->sort_value, start->nb);
-	//printf("total moves : %i\n", moves);
+	//free_stack(stack_a);
+	system("leaks push_swap");
+	return (0);
 }

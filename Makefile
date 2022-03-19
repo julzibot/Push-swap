@@ -6,7 +6,7 @@
 #    By: jibot <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/19 19:19:15 by jibot             #+#    #+#              #
-#    Updated: 2022/03/10 17:06:11 by jibot            ###   ########.fr        #
+#    Updated: 2022/03/19 16:36:03 by jibot            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC		= gcc -Wall -Wextra -Werror
 
 RM		= rm -f
 
-SRCS	= Push_swap.c main.c ./libft/ft_calloc.c ./libft/ft_split.c ./libft/ft_isdigit.c ./libft/ft_atoi.c
+SRCS	= Push_swap.c main.c ./libft/ft_strdup.c ./libft/ft_strlen.c ./libft/ft_calloc.c ./libft/ft_split.c ./libft/ft_isdigit.c ./libft/ft_atoi.c
 
 all:		${NAME}
 
