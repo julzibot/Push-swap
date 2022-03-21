@@ -6,17 +6,17 @@
 #    By: jibot <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/19 19:19:15 by jibot             #+#    #+#              #
-#    Updated: 2022/03/19 16:36:03 by jibot            ###   ########.fr        #
+#    Updated: 2022/03/21 17:42:30 by jibot            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= push_swap
 
-CC		= gcc -Wall -Wextra -Werror
+CC		= gcc -g -Wall -Wextra -Werror
 
 RM		= rm -f
 
-SRCS	= Push_swap.c main.c ./libft/ft_strdup.c ./libft/ft_strlen.c ./libft/ft_calloc.c ./libft/ft_split.c ./libft/ft_isdigit.c ./libft/ft_atoi.c
+SRCS	= Alg_exec.c Alg_ops.c Calcs.c Parsing.c Stack_utils.c Stack_ops.c Utils.c main.c ./libft/ft_strdup.c ./libft/ft_strlen.c ./libft/ft_calloc.c ./libft/ft_split.c ./libft/ft_isdigit.c ./libft/ft_atoi.c
 
 all:		${NAME}
 
