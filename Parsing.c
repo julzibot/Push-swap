@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:02:07 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/21 17:58:36 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/21 20:28:24 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	ft_arglen(char **arg)
 {
-	int	i;
-	int	j;
-	int	count;
+	int		i;
+	int		j;
+	int		count;
 	char	**tab;
 
 	i = 0;
@@ -64,7 +64,7 @@ char	**arg_parsing(char **argv)
 
 	i = 0;
 	count = 0;
-	tab = malloc(sizeof(char*) * (ft_arglen(argv) + 1));
+	tab = malloc(sizeof(char *) * (ft_arglen(argv) + 1));
 	while (argv[++i])
 	{
 		j = -1;
@@ -85,11 +85,10 @@ char	**arg_parsing(char **argv)
 void	get_values(t_int *stack, char **args)
 {
 	t_int	*start;
-	int i;
-	int ncount;
+	int		i;
+	int		ncount;
 
 	i = 0;
-
 	ncount = 0;
 	start = stack;
 	while (args[++i])

@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:07:08 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/21 18:43:29 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/21 20:17:23 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	push_sort(t_int **stack_a, t_int **stack_b)
 	else
 	{
 		if ((half_a == half_b && half_b == 0)
-			|| conditions(half_a, value, stack_a, stack_b) == 2) 
+			|| conditions(half_a, value, stack_a, stack_b) == 2)
 			rr_case(stack_a, stack_b, value);
 		else
 			rrr_case(stack_a, stack_b, value);

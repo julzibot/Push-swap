@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:22:54 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/21 18:27:47 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/21 20:19:17 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,21 @@ void	rr_case(t_int **stack_a, t_int **stack_b, t_int *value)
 		printf("rr\n");
 	}
 	if (*stack_a == value)
+	{
 		while (!(*stack_b == value->neighbor))
 		{
 			rotate(stack_b);
 			printf("rb\n");
 		}
+	}
 	else
+	{
 		while (!(*stack_a == value))
 		{
 			rotate(stack_a);
 			printf("ra\n");
 		}
+	}
 }
 
 void	rrr_case(t_int **stack_a, t_int **stack_b, t_int *value)
@@ -64,17 +68,21 @@ void	rrr_case(t_int **stack_a, t_int **stack_b, t_int *value)
 		printf("rrr\n");
 	}
 	if (*stack_a == value)
+	{
 		while (!(*stack_b == value->neighbor))
 		{
 			r_rotate(stack_b);
 			printf("rrb\n");
 		}
+	}
 	else
+	{
 		while (!(*stack_a == value))
 		{
 			r_rotate(stack_a);
 			printf("rra\n");
 		}
+	}
 }
 
 void	ra_case(t_int **stack_a, t_int **stack_b, t_int *value)
