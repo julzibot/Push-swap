@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:07:08 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/21 20:17:23 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/22 18:02:07 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@ int	conditions(int half_a, t_int *value, t_int **stack_a, t_int **stack_b)
 {
 	int	half_b;
 
-	half_b = Vabs(1 - half_a);
-	if (Vabs(half_a * stacklen(*stack_a) - value->pos) \
-		+ Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos) \
-		< ft_min(ft_max(Vabs(half_b * stacklen(*stack_a) - value->pos), \
-		Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos)), \
-		ft_max(Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos), \
-		Vabs(half_a * stacklen(*stack_a) - value->pos))))
+	half_b = v_abs(1 - half_a);
+	if (v_abs(half_a * stacklen(*stack_a) - value->pos) \
+		+ v_abs(half_b * stacklen(*stack_b) - value->neighbor->pos) \
+		< ft_min(ft_max(v_abs(half_b * stacklen(*stack_a) - value->pos), \
+		v_abs(half_b * stacklen(*stack_b) - value->neighbor->pos)), \
+		ft_max(v_abs(half_a * stacklen(*stack_b) - value->neighbor->pos), \
+		v_abs(half_a * stacklen(*stack_a) - value->pos))))
 		return (1);
-	else if (ft_max(Vabs(half_b * stacklen(*stack_a) - value->pos), \
-		Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos)) \
-		< ft_max(Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos), \
-		Vabs(half_a * stacklen(*stack_a) - value->pos)))
+	else if (ft_max(v_abs(half_b * stacklen(*stack_a) - value->pos), \
+		v_abs(half_b * stacklen(*stack_b) - value->neighbor->pos)) \
+		< ft_max(v_abs(half_a * stacklen(*stack_b) - value->neighbor->pos), \
+		v_abs(half_a * stacklen(*stack_a) - value->pos)))
 		return (2);
 	return (0);
 }
@@ -59,6 +59,8 @@ void	push_sort(t_int **stack_a, t_int **stack_b)
 	int		half_a;
 	int		half_b;
 
+	set_pos(*stack_a);
+	set_pos(*stack_b);
 	value = moves_calc(*stack_a, *stack_b);
 	half_a = which_half(value, *stack_a);
 	half_b = which_half(value->neighbor, *stack_b);

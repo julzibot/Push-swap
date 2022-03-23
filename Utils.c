@@ -6,13 +6,13 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:29:52 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/21 17:50:00 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/22 13:47:42 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Push_swap.h"
 
-int	Vabs(int a)
+int	v_abs(int a)
 {
 	if (a < 0)
 		return (-a);
@@ -40,11 +40,8 @@ int	get_min(t_int *stack)
 
 	min = INT_MAX;
 	cpy = stack;
-
 	if (is_svalued(stack) == 1)
 	{
-		if (stacklen(stack) == 1)
-			return (cpy->sort_value);
 		while (cpy->next)
 		{
 			if (cpy->sort_value < min)

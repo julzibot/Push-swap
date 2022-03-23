@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:28:15 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/21 17:28:43 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/22 19:37:17 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void	push(t_int **slist1, t_int **slist2, char letter)
 		*slist1 = NULL;
 	stack1 = *slist2;
 	stack1->next = temp;
-	printf("p%c\n", letter);
+	ft_printf("p%c\n", letter);
 }
 
-void	swap(t_int **slist)
+void	swap(t_int **slist, char letter)
 {
-	t_int *temp;
-	t_int *start;
+	t_int	*temp;
+	t_int	*start;
 
 	temp = *slist;
 	start = *slist;
@@ -40,6 +40,7 @@ void	swap(t_int **slist)
 	start->next = temp->next;
 	temp->next = start;
 	*slist = temp;
+	ft_printf("s%c\n", letter);
 }
 
 void	rotate(t_int **slist)

@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 13:41:48 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/21 18:30:13 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/23 17:49:12 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 typedef struct s_int
 {
 	int				nb;
-	int 			sort_value;
+	int				sort_value;
 	int				pos;
 	int				moves;
-	struct	s_int	*neighbor;
-	struct	s_int	*next;
+	struct s_int	*neighbor;
+	struct s_int	*next;
 }	t_int;
 
-int		Vabs(int a);
+int		v_abs(int a);
 int		ft_min(int a, int b);
 int		ft_max(int a, int b);
 int		is_svalued(t_int *stack);
@@ -35,6 +35,7 @@ int		get_max(t_int *stack);
 int		stacklen(t_int *stack);
 int		which_half(t_int *value, t_int *stack);
 int		ft_arglen(char **arg);
+int		error_handle(char **args);
 char	**arg_parsing(char **argv);
 char	**ft_tabdup(char **data);
 t_int	*ft_stacklast(t_int *stack);
@@ -45,7 +46,7 @@ void	get_values(t_int *stack, char **args);
 void	set_pos(t_int *stack);
 void	stackadd(t_int **slist, t_int *new);
 void	push(t_int **slist1, t_int **slist2, char letter);
-void	swap(t_int **slist);
+void	swap(t_int **slist, char letter);
 void	rotate(t_int **slist);
 void	r_rotate(t_int **slist);
 void	rr_case(t_int **stack_a, t_int **stack_b, t_int *value);

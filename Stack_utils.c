@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:30:57 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/21 17:32:29 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/22 13:28:17 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ t_int	*ft_stacklast(t_int *stack)
 
 int	is_svalued(t_int *stack)
 {
-	int	unsorted;
-	t_int *cpy;
+	int		unsorted;
+	t_int	*cpy;
 
 	unsorted = 0;
 	cpy = stack;

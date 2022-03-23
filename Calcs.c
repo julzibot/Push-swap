@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:26:37 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/21 20:24:47 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/23 12:00:28 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	is_sorted(t_int *stack)
 	cpy = stack;
 	while (++i < stacklen(stack))
 	{
-		if (cpy->sort_value != cpy->next->sort_value + 1)
+		if (cpy->next && cpy->sort_value != cpy->next->sort_value - 1)
 			return (0);
 		if (cpy->next)
 			cpy = cpy->next;
@@ -76,15 +76,15 @@ void	get_moves(t_int *value, t_int **stack_a, t_int **stack_b)
 		value->neighbor = *stack_b;
 	half_b = which_half(temp, *stack_b);
 	if (half_a == half_b)
-		value->moves = ft_max(Vabs(half_a * stacklen(*stack_a) - value->pos), \
-		Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos));
+		value->moves = ft_max(v_abs(half_a * stacklen(*stack_a) - value->pos), \
+		v_abs(half_b * stacklen(*stack_b) - value->neighbor->pos));
 	else
-		value->moves = ft_min(Vabs(half_a * stacklen(*stack_a) - value->pos) \
-		+ Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos), \
-		ft_min(ft_max(Vabs(half_b * stacklen(*stack_a) - value->pos), \
-		Vabs(half_b * stacklen(*stack_b) - value->neighbor->pos)), \
-		ft_max(Vabs(half_a * stacklen(*stack_b) - value->neighbor->pos), \
-		Vabs(half_a * stacklen(*stack_a) - value->pos))));
+		value->moves = ft_min(v_abs(half_a * stacklen(*stack_a) - value->pos) \
+		+ v_abs(half_b * stacklen(*stack_b) - value->neighbor->pos), \
+		ft_min(ft_max(v_abs(half_b * stacklen(*stack_a) - value->pos), \
+		v_abs(half_b * stacklen(*stack_b) - value->neighbor->pos)), \
+		ft_max(v_abs(half_a * stacklen(*stack_b) - value->neighbor->pos), \
+		v_abs(half_a * stacklen(*stack_a) - value->pos))));
 }
 
 t_int	*moves_calc(t_int *stack_a, t_int *stack_b)

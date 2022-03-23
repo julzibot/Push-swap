@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:02:07 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/21 20:28:24 by jibot            ###   ########.fr       */
+/*   Updated: 2022/03/23 17:47:13 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	**ft_tabdup(char **data)
 	i = 0;
 	while (data[i])
 	{
-		dup[i] = data[i];
+		dup[i] = ft_strdup(data[i]);
 		i++;
 	}
 	dup[i] = NULL;
@@ -64,6 +64,7 @@ char	**arg_parsing(char **argv)
 
 	i = 0;
 	count = 0;
+	free(argv[0]);
 	tab = malloc(sizeof(char *) * (ft_arglen(argv) + 1));
 	while (argv[++i])
 	{
@@ -71,11 +72,11 @@ char	**arg_parsing(char **argv)
 		temp = ft_split(argv[i], ' ');
 		while (temp[++j])
 		{
-			tab[count] = ft_strdup(temp[j]);
+			tab[count++] = ft_strdup(temp[j]);
 			free(temp[j]);
-			count++;
 		}
 		free(temp);
+		free(argv[i]);
 	}
 	free(argv);
 	tab[count] = NULL;
