@@ -6,7 +6,7 @@
 #    By: jibot <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/19 19:19:15 by jibot             #+#    #+#              #
-#    Updated: 2022/03/22 17:36:03 by jibot            ###   ########.fr        #
+#    Updated: 2022/04/04 14:04:20 by jibot            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,12 +16,18 @@ CC		= gcc -Wall -Wextra -Werror
 
 RM		= rm -f
 
-SRCS	= ./libft/*.c *.c
+SRCS	= Alg_exec.c Alg_ops.c Calcs.c Parsing.c Stack_ops.c Stack_utils.c Utils.c Errors.c main.c
+
+OBJS	= ${SRCS:.c=.o}
 
 all:		${NAME}
 
-${NAME}:	${SRCS} 
-			${CC} ${SRCS} -o ${NAME}
+%.o:	%.c
+			${CC} -c $< -o $@
+
+${NAME}:	${OBJS} 
+			make all -C ./libft
+			${CC} -o ${NAME} ${OBJS} libft/libft.a
 			
 clean: 
 			${RM} ${SRCS:.c=.o}

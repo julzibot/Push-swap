@@ -6,7 +6,7 @@
 /*   By: jibot <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:02:07 by jibot             #+#    #+#             */
-/*   Updated: 2022/03/23 17:47:13 by jibot            ###   ########.fr       */
+/*   Updated: 2022/04/04 17:01:31 by jibot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	get_values(t_int *stack, char **args)
 		stack = start;
 		while (++i < stacklen(start))
 		{
-			if (stack->nb == get_min(start))
+			if (stack->nb == get_min(start) && stack->sort_value < 0)
 				stack->sort_value = ncount++;
 			if (stack->next)
 				stack = stack->next;
